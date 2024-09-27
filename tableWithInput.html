@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>тэйбл с поиском</title>
+    <link rel="stylesheet" href="tableWithInput.css" />
+  </head>
+  <body>
+    <div class="header"></div>
+    <div class="tableBox">
+      <div class="input">
+        <label for="searchField">
+          <p>Поиск по таблице:</p>
+        </label>
+      <input class="searchField"
+        type="text"
+        id="searchField"
+        maxlength="15"
+      >
+    </div>
+      <table>
+          <tr>
+            <th>
+              <button class="head" id="cityButton" type="button" onClick="sortName()">
+                <div>Город</div>
+              </button>
+            </th>
+            <th>
+                <button class="head" id="squareButton">
+              <div>Площадь</div>
+                </button></th>
+            <th>
+                <button class="head" id="populationButton">
+              <div>Население</div>
+                </button></th>
+          </tr>
+        <tbody class="tbody"></tbody>
+      </table>
+    </tbody>
+    <ul id="pagination"> 
+    </ul>
+    </div>
+
+
+
+<script>
+  const tableData = [
+  { name: "Москва", square: "2561", population: "13149803" },
+  { name: "Химки", square: "109", population: "256684" },
+  { name: "Дубна", square: "63", population: "74032" },
+  { name: "Санкт-Петербург", square: "1439", population: "5597763" },
+  { name: "Выборг", square: "160", population: "78457" },
+  { name: "Пушкин", square: "89", population: "60306" },
+  { name: "Красное село", square: "19", population: "60306" },
+  { name: "Петергоф", square: "39", population: "80701" },
+  { name: "Ломоносов", square: "35", population: "39088" },
+  { name: "Сестрорецк", square: "88", population: "42189" },
+  { name: "Мурино", square: "13", population: "112536" },
+  { name: "Токсово", square: "19", population: "6806" },
+  { name: "Сертолово", square: "27", population: "71614" },
+  { name: "Сланцы", square: "36", population: "33514" },
+  { name: "Кронштадт", square: "19", population: "44321" },
+  { name: "Зеленогорск", square: "30", population: "15492" },
+  { name: "Ивангород", square: "7", population: "9552" },
+  { name: "Петрозаводск", square: "113", population: "235694" },
+  { name: "Кандалакша", square: "31", population: "28435" },
+  { name: "Вологда", square: "116", population: "318112" },
+  { name: "Череповец", square: "122", population: "298790" },
+  { name: "Устюжна", square: "8", population: "7653" },
+  { name: "Тверь", square: "152", population: "416219" },
+  { name: "Псков", square: "95", population: "193082" },
+  { name: "Великий Новгород", square: "90", population: "222340" },
+  { name: "Владимир", square: "124", population: "344082" },
+  { name: "Суздаль", square: "15", population: "9286" },
+  { name: "Иваново", square: "104", population: "404598" },
+  { name: "Воронеж", square: "596", population: "1046425" },
+  { name: "Рязань", square: "224", population: "523200" },
+  { name: "Солотча", square: "28", population: "4600" },
+  { name: "Калуга", square: "168", population: "342936" },
+  { name: "Тула", square: "153", population: "461692" },
+  { name: "Смоленск", square: "166", population: "312986" },
+  { name: "Казань", square: "588", population: "1314685" },
+  { name: "Волгоград", square: "859", population: "1018898" },
+  { name: "Петропавловск-Камчатский", square: "362", population: "181181" },
+  { name: "Томск", square: "294", population: "545391" },
+  { name: "Новосибирск", square: "502", population: "1567000" },
+  { name: "Екатеринбург", square: "1112", population: "1536183" },
+  { name: "Иркутск", square: "280", population: "623869" },
+  { name: "Сочи", square: "186", population: "561793" },
+  { name: "Анапа", square: "58", population: "82695" },
+  { name: "Туапсе", square: "33", population: "63185" },
+  { name: "Калининград", square: "223", population: "489584" },
+  { name: "Балтийск", square: "49", population: "23032" },
+  { name: "Зеленоградск", square: "17", population: "17133" },
+  { name: "Светлогорск", square: "21", population: "16771" },
+  { name: "Янтарный", square: "26", population: "6487" },
+  { name: "Неман", square: "14", population: "9216" },
+  { name: "Минск", square: "348", population: "1992862" },
+  { name: "Могилев", square: "118", population: "380440" },
+  { name: "Витебск", square: "104", population: "359148" },
+  { name: "Евпатория", square: "65", population: "105719"},
+  { name: "Лаппеэнранта", square: "29", population: "72595" },
+  { name: "Иматра", square: "15", population: "25185" },
+  { name: "Таллин", square: "159", population: "426538" },
+  { name: "Нарва", square: "84", population: "57130" },
+  { name: "Силламяэ", square: "10", population: "13288" },
+  { name: "Коломбо", square: "37", population: "752993" },
+  { name: "Галле", square: "16", population: "93118" },
+  { name: "Велигама", square: "1", population: "35000" },
+  { name: "Мирисса", square: "1", population: "4695" },
+  { name: "Матара", square: "1", population: "68000" },
+  { name: "Бангкок", square: "1569", population: "10900000" },
+  { name: "Хошимин", square: "2095", population: "9567656" },
+  { name: "Фантхьет", square: "206", population: "228536" },
+  { name: "Муйне", square: "1", population: "24275" },
+  { name: "Далат", square: "393", population: "258014" },
+  { name: "Нячанг", square: "252", population: "422601" },
+];
+
+  const table = document.querySelector(".tbody");
+  const notesOnPage = 10;
+  const pagination = document.querySelector("#pagination");
+
+
+  let items = [];
+  
+//нужное количество страниц пагинации
+  for (let i = 1; i <= Math.ceil(tableData.length/notesOnPage); i++) {
+    let li = document.createElement('li');
+    li.innerHTML = i;
+    pagination.appendChild(li);
+    items.push(li);
+  };
+
+  let active;
+  function pagi() {
+  for (let item of items) {
+    item.addEventListener("click", function() {
+      let active = document.querySelector("#pagination li.active");
+      if (active) {
+        active.classList.remove('active');
+      }
+      this.classList.add("active"); 
+      let pageNum = +this.innerHTML;
+      let start = (pageNum - 1) * notesOnPage;
+      let end = start + notesOnPage;
+      let notes = tableData.slice(start, end);
+      table.innerHTML = '';
+
+      for (let note of notes) {
+        let tr = document.createElement("tr");
+        table.appendChild(tr);
+        let td;
+        td = document.createElement("td");
+        td.innerHTML = note.name;
+        tr.appendChild(td);
+
+        td = document.createElement("td");
+        td.innerHTML = note.square;
+        tr.appendChild(td);
+
+        td = document.createElement("td");
+        td.innerHTML = note.population;
+        tr.appendChild(td);
+      };
+  });
+  };
+};
+pagi();
+
+/*valFromArr(tableData);          //бывшая функция отрисовки
+ function valFromArr(data) {
+  data.forEach((item) => {
+    const tr = document.createElement("tr");
+    table.append(tr);
+    tr.appendChild(document.createElement("td")).append(item.name);
+    tr.appendChild(document.createElement("td")).append(item.square);
+    tr.appendChild(document.createElement("td")).append(item.population);
+  });
+};  */
+
+const input = document.querySelector("#searchField");        //инпут, работал только с бывшей функцией отрисовки
+  input.oninput = function() {
+    const newTable = tableData.filter((item) => item.name.toLowerCase().includes(input.value.toLowerCase()));
+    table.innerHTML = "";
+
+    pagi(newTable);
+  };
+
+const cityButton = document.querySelector("#cityButton");
+const squareButton = document.querySelector("#squareButton");
+const populationButton = document.querySelector("#populationButton");
+function sortFunc() {            //сортировОчка
+  let firstClick = true;
+
+  cityButton.addEventListener("click", function nameSort() {
+  if(firstClick) {
+    nameSort1 = tableData.sort((a,b) => a.name > b.name ? 1:-1);
+    table.innerHTML = "";
+    pagi(nameSort1);
+  } else {
+    nameSort2 = tableData.sort((a,b) => a.name > b.name ? -1:1);
+    table.innerHTML = "";
+    pagi(nameSort2);
+  }
+  firstClick = !firstClick;
+  });
+
+  squareButton.addEventListener("click", function squareSort() {
+  if(firstClick) {
+    squareSort1 = tableData.sort((a,b) => parseInt(a.square) > parseInt(b.square) ? 1:-1);
+    table.innerHTML = "";
+    pagi(squareSort1);
+  } else {
+    squareSort2 = tableData.sort((a,b) => parseInt(a.square) > parseInt(b.square) ? -1:1);
+    table.innerHTML = "";
+    pagi(squareSort2);
+  }
+  firstClick = !firstClick;
+  });
+
+  populationButton.addEventListener("click", function populationSort() {
+  if(firstClick) {
+    populationSort1 = tableData.sort((a,b) => parseInt(a.population) > parseInt(b.population) ? 1:-1);
+    table.innerHTML = "";
+    pagi(populationSort1);
+  } else {
+    populationSort2 = tableData.sort((a,b) => parseInt(a.population) > parseInt(b.population) ? -1:1);
+    table.innerHTML = "";
+    pagi(populationSort2);
+  }
+  firstClick = !firstClick;
+  });
+  };
+  sortFunc();
+
+
+
+    </script>
+  </body>
+</html>
